@@ -2,7 +2,7 @@
 
 A fast and interactive 3D visualization of neutrino oscillations, built with Vue 3 and three.js.
 
-**Live site: https://czczc.github.io/nuglass/**
+**Live site: https://czczc.github.io/nuglass/** — installable as a progressive web app; after the first visit it also works offline.
 
 The app offers six linked views of the same physics (oscillogram, biprobability, statesphere, phasors, flavortube, and worldline), each paired with live 2D plots, switchable between oscillation channels (νμ→νe, νμ→νμ, νμ→ντ, νe→νe), with experiment presets spanning accelerator and reactor scales (DUNE, NOvA, T2K, JUNO, KamLAND, Daya Bay). All calculations are performed live in the browser by two independent engines: a JavaScript port of NuFast-LBL ([Denton & Parke, arXiv:2405.02400](https://arxiv.org/abs/2405.02400)) and an exact amplitude engine that tracks the full quantum state, cross-checked against each other to better than one part in ten million. See the in-app FAQ page for the physics details.
 

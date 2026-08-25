@@ -50,6 +50,10 @@ prototypes/
 ###################################################
 paper/
 
+# talk slides (local working tree, not published) #
+###################################################
+talk/
+
 # web app (node/vite) #
 #######################
 node_modules/

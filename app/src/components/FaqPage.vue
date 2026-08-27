@@ -348,7 +348,7 @@ onMounted(() => {
           which channels it measures and whether the source is antineutrinos, and, if you want to
           explore, override the oscillation parameters themselves. The inputs switch between GeV·km
           and MeV·m for reactor-scale setups, and the form can be reset to DUNE or JUNO defaults.
-          Saved experiments live in your browser's localStorage (nothing is uploaded), which persisits across visits. Loading one makes it the active experiment everywhere.
+          Saved experiments live in your browser's localStorage (nothing is uploaded), which persists across visits. Loading one makes it the active experiment everywhere.
         </p>
       </section>
 

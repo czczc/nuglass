@@ -2,6 +2,21 @@
 // Computes all nine oscillation probabilities in constant-density matter with real arithmetic only.
 // Cross-validated against the complex-Jacobi engine to 5.8e-11 (N_Newton=2) / 1.4e-7 (N_Newton=1);
 // see tests/engines.test.js and github.com/czczc/nuglass/issues/8.
+//
+// Upstream: https://github.com/PeterDenton/NuFast-LBL
+// Copyright (c) 2024 Peter B. Denton. MIT License:
+//   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+//   associated documentation files (the "Software"), to deal in the Software without restriction,
+//   including without limitation the rights to use, copy, modify, merge, publish, distribute,
+//   sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
+//   furnished to do so, subject to the following conditions: The above copyright notice and this
+//   permission notice shall be included in all copies or substantial portions of the Software.
+//   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT
+//   NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+//   NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES
+//   OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+//   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+// This port is distributed under the same MIT terms as the rest of NuGlass (see LICENSE).
 import { eVsqkm_to_GeV_over4, YerhoE2a } from './constants.js';
 
 // E > 0 for neutrinos, E < 0 for antineutrinos (upstream convention).

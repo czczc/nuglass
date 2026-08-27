@@ -363,6 +363,18 @@ onMounted(() => {
         <pre class="bib">{{ BIBTEX }}</pre>
         <p><button class="linkish" @click="copyBibtex">{{ copied ? 'copied ✓' : 'copy BibTeX' }}</button></p>
       </section>
+
+      <section id="faq-license">
+        <h3>Open source and license</h3>
+        <p>
+          NuGlass is open source under the
+          <a href="https://github.com/czczc/nuglass/blob/main/LICENSE" target="_blank" rel="noopener">MIT License</a>;
+          the code is at <a href="https://github.com/czczc/nuglass" target="_blank" rel="noopener">github.com/czczc/nuglass</a>,
+          where bug reports and feature requests are welcome as issues. The NuFast-LBL calculator is a port of
+          Denton &amp; Parke's MIT-licensed
+          <a href="https://github.com/PeterDenton/NuFast-LBL" target="_blank" rel="noopener">reference code</a>.
+        </p>
+      </section>
     </article>
   </div>
 </template>

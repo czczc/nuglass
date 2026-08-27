@@ -42,3 +42,9 @@ If you use NuGlass in a paper or talk, please cite it as:
 
 - `app/`: the web app (Vite + Vue 3 + three.js). Physics engines live in `app/src/engines/` (`nufast.js`, the NuFast-LBL port; `jacobi.js`, the exact amplitude engine), views in `app/src/views/`, and the engine cross-validation in `app/tests/`.
 - `legacy/`: the original tools this app replaced (a 2D Chart.js page, a ROOT plotting macro, and a wrapper around [Brett Viren's nuosc](https://github.com/brettviren/nuosc) code). Kept for reference, no longer maintained.
+
+## License
+
+NuGlass is open source under the [MIT License](LICENSE). The NuFast-LBL engine port
+(`app/src/engines/nufast.js`) is derived from [NuFast-LBL](https://github.com/PeterDenton/NuFast-LBL)
+by Peter Denton and Stephen Parke, itself MIT-licensed; its copyright notice is retained in that file.

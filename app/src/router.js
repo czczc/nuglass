@@ -22,11 +22,16 @@ export const router = createRouter({
 });
 
 // tab/bookmark titles carry the brand and the current page
-router.afterEach((to) => {
+router.afterEach((to, from) => {
   if (to.name === 'view') document.title = `${VIEW_MAP[to.params.view].label} · NuGlass`;
   else if (to.name === 'faq') document.title = 'FAQ · NuGlass';
   else if (to.name === 'experiments') document.title = 'Experiments · NuGlass';
   else document.title = 'NuGlass — 3D Neutrino Oscillations';
+  // GoatCounter counts the initial load itself (script in index.html); in-app
+  // navigations are hash changes via pushState, which it cannot see, so count them here.
+  if (from.matched.length && window.goatcounter?.count) {
+    window.goatcounter.count({ path: location.pathname + location.hash });
+  }
 });
 
 router.beforeEach((to) => {

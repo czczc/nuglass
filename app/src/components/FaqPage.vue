@@ -3,12 +3,14 @@ import { onMounted, ref } from 'vue';
 import { store } from '../store.js';
 import { router } from '../router.js';
 
-const BIBTEX = `@misc{nuglass,
-  author       = {Zhang, Chao},
-  title        = {NuGlass: a fast and interactive 3D visualization of neutrino oscillations},
-  year         = {2026},
-  howpublished = {\\url{https://czczc.github.io/nuglass/}},
-  note         = {Source code: \\url{https://github.com/czczc/nuglass}}
+const BIBTEX = `@article{nuglass,
+  author        = {Zhang, Chao},
+  title         = {NuGlass: A Fast and Interactive 3D Visualization of Neutrino Oscillations},
+  year          = {2026},
+  eprint        = {2608.25049},
+  archivePrefix = {arXiv},
+  primaryClass  = {hep-ph},
+  note          = {Web app: \\url{https://czczc.github.io/nuglass/}; source code: \\url{https://github.com/czczc/nuglass}}
 }`;
 
 const copied = ref(false);
@@ -37,7 +39,10 @@ onMounted(() => {
       <p class="sub">
         NuGlass is a fast, interactive, and animated 3D visualization of neutrino oscillations: the strange way neutrinos change
         from one type to another as they travel. Six 3D views are provided, each paired with live 2D plots.
-        This page explains what each view shows and how the numbers behind it are computed.
+        This page explains what each view shows and how the numbers behind it are computed; the
+        “show details” blocks give the exact formulas. A full description of the physics, the views,
+        and the software is in the accompanying paper,
+        <a href="https://arxiv.org/abs/2608.25049" target="_blank" rel="noopener">arXiv:2608.25049</a>.
       </p>
 
       <section id="faq-engines">
@@ -59,6 +64,42 @@ onMounted(() => {
           just the final probabilities; the statesphere and phasors views need that extra information.
           The two calculators are cross-checked against each other to better than one part in ten million.
         </p>
+        <details class="math">
+          <summary>Show details: the equations behind every view</summary>
+          <p>
+            Three-flavor neutrinos in matter of constant density ρ evolve under the flavor-basis Hamiltonian
+          </p>
+          <p class="eq">H = (1/2E)&hairsp;U&hairsp;diag(0, Δm²<sub>21</sub>, Δm²<sub>31</sub>)&hairsp;U<sup>†</sup> + diag(±V, 0, 0),</p>
+          <p>
+            where U is the PMNS mixing matrix (parametrized by θ<sub>12</sub>, θ<sub>13</sub>, θ<sub>23</sub>, δCP) and
+            V = √2&hairsp;G<sub>F</sub>&hairsp;N<sub>e</sub> is the matter potential, with electron density
+            N<sub>e</sub> ∝ Y<sub>e</sub>ρ (Y<sub>e</sub> = 0.5). Diagonalizing
+            H = W&hairsp;diag(λ<sub>1</sub>, λ<sub>2</sub>, λ<sub>3</sub>)&hairsp;W<sup>†</sup> gives the mixing matrix W
+            and the eigenvalues λ<sub>i</sub> in matter (W → U and λ<sub>i</sub> → Δm²<sub>i1</sub>/2E in vacuum).
+            A neutrino born as flavor α has, after a distance L, the flavor amplitudes and probabilities
+          </p>
+          <p class="eq">
+            a<sub>β</sub>(L) = ⟨ν<sub>β</sub>| e<sup>−iHL</sup> |ν<sub>α</sub>⟩
+            = Σ<sub>i</sub> W<sub>βi</sub> W<sub>αi</sub><sup>*</sup> e<sup>−iλ<sub>i</sub>L</sup>,
+            &nbsp;&nbsp; P(ν<sub>α</sub>→ν<sub>β</sub>) = |a<sub>β</sub>(L)|².
+          </p>
+          <p>
+            Everything drawn in the six views derives from this equation. In practical units the vacuum phases,
+            and the matter term expressed in the same eV² units as the mass splittings, are
+          </p>
+          <p class="eq">Δ<sub>ij</sub> ≡ Δm²<sub>ij</sub>&hairsp;L/4E = 1.267 · (Δm²<sub>ij</sub>/eV²) · (L/km) · (GeV/E),</p>
+          <p class="eq">a ≡ 2EV = 1.52588×10<sup>−4</sup> eV² · (Y<sub>e</sub>ρ / g&hairsp;cm<sup>−3</sup>) · (E/GeV),</p>
+          <p>
+            so vacuum oscillations depend on L and E only through L/E, while the matter term grows with E alone.
+            Antineutrinos are obtained by δCP → −δCP and V → −V; the inverted mass ordering by flipping the sign
+            of Δm²<sub>31</sub> at fixed magnitude. NuFast-LBL evaluates P directly in real arithmetic, with one
+            Newton refinement of the matter eigenvalues; the exact engine diagonalizes the complex H with a Jacobi
+            eigensolver and returns the amplitudes a<sub>β</sub>, the individual terms
+            c<sub>i</sub> = W<sub>βi</sub>W<sub>αi</sub><sup>*</sup>, and the eigenvalues λ<sub>i</sub>. Over
+            42,000 parameter points and all nine flavor channels the two engines agree to
+            2.3×10<sup>−7</sup> in probability (section 2 of the paper).
+          </p>
+        </details>
         <p>
           <strong>Experiment presets</strong>: DUNE, NOvA and T2K each set the travel
           distance, rock density and beam energy range of a real accelerator experiment; the reactor
@@ -88,6 +129,17 @@ onMounted(() => {
           “top” looks straight down and turns the surface into the classic color-map oscillogram that
           experiments publish.
         </p>
+        <details class="math">
+          <summary>Show details</summary>
+          <p>
+            The surface is P(ν<sub>α</sub>→ν<sub>β</sub>) = |a<sub>β</sub>|² for the channel selected in the header,
+            computed in matter on a grid over (E, z), where the second axis z is L (0 to twice the baseline),
+            δCP (0–360°), or ρ (0–5 g/cm³); the other variables stay at their slider values. Height and color both
+            encode P. The white line is the cut at the marker's z, i.e. the P(E) curve of the first 2D panel; the
+            second panel is the cut at the current E along δCP. In the top view the surface reduces to the
+            standard 2D oscillogram, a color map of P over E and z.
+          </p>
+        </details>
         <p><button class="linkish" @click="openView('oscillogram')">open this view →</button></p>
       </section>
 
@@ -109,6 +161,19 @@ onMounted(() => {
           the orange and blue rings is what lets experiments tell the two mass orderings apart; where
           the rings overlap, that energy alone cannot decide.
         </p>
+        <details class="math">
+          <summary>Show details</summary>
+          <p>
+            At fixed E and L the plotted point is (P(ν<sub>μ</sub>→ν<sub>e</sub>), P(ν̄<sub>μ</sub>→ν̄<sub>e</sub>)),
+            the antineutrino probability computed with δCP → −δCP and V → −V. Because the amplitude is linear in
+            e<sup>±iδCP</sup>, each probability has the form A + B&hairsp;cos&hairsp;δCP + C&hairsp;sin&hairsp;δCP
+            (exactly, also in matter), so the point traces an ellipse as δCP runs through 0–360°. The 3D view
+            stacks that ellipse for every energy in the experiment's window, once per mass ordering (inverted:
+            Δm²<sub>31</sub> → −|Δm²<sub>31</sub>|). The gray diagonal P = P̄ is the CP-conserving line. The 2D
+            panel is the front-view projection at the marker energy, drawn 1:1: the standard Minakata–Nunokawa
+            diagram.
+          </p>
+        </details>
         <p><button class="linkish" @click="openView('biprob')">open this view →</button></p>
       </section>
 
@@ -126,17 +191,29 @@ onMounted(() => {
           into the third type, which this picture cannot show directly. The 2D panel
           plots all three probabilities along the sweep, with its marker synced to the 3D arrow.
         </p>
-        <p>
-          For readers who want the exact construction: this globe is the
-          <a href="https://en.wikipedia.org/wiki/Bloch_sphere" target="_blank" rel="noopener">Bloch
-          sphere</a> of a quantum state, applied to the two flavors on the poles. Writing
-          a<sub>e</sub> and a<sub>μ</sub> for the quantum amplitudes of the flavor states νe and νμ, the arrow is
-          <span class="k">b = ( 2&hairsp;Re(a<sub>e</sub>a<sub>μ</sub>*), 2&hairsp;Im(a<sub>e</sub>a<sub>μ</sub>*), |a<sub>e</sub>|² − |a<sub>μ</sub>|² )</span>. The height toward the north pole is the probability difference
-          P<sub>e</sub> − P<sub>μ</sub>; the two horizontal components are the real and imaginary parts
-          of the interference term (the “coherence”) between the flavors. |b| = 1 means a pure two-flavor state;
-          anything shorter means probability sits in the third flavor. For the ντ-vs-νμ pole choice,
-          replace a<sub>e</sub> with a<sub>τ</sub>.
-        </p>
+        <details class="math">
+          <summary>Show details</summary>
+          <p>
+            This globe is the
+            <a href="https://en.wikipedia.org/wiki/Bloch_sphere" target="_blank" rel="noopener">Bloch
+            sphere</a> of a quantum state, applied to the two flavors on the poles. Writing
+            a<sub>e</sub> and a<sub>μ</sub> for the flavor amplitudes defined above, the arrow is
+          </p>
+          <p class="eq">b = ( 2&hairsp;Re(a<sub>e</sub>a<sub>μ</sub><sup>*</sup>), 2&hairsp;Im(a<sub>e</sub>a<sub>μ</sub><sup>*</sup>), |a<sub>e</sub>|² − |a<sub>μ</sub>|² ),</p>
+          <p>
+            the expectation values of the three Pauli matrices in the two-flavor subspace. The height toward the
+            north pole is the probability difference P<sub>e</sub> − P<sub>μ</sub>; the two horizontal components
+            are the real and imaginary parts of the interference term (the “coherence”) between the flavors. For a
+            normalized two-flavor state cos(θ/2)|ν<sub>μ</sub>⟩ + e<sup>iφ</sup>sin(θ/2)|ν<sub>e</sub>⟩ this
+            reduces to the familiar polar form (sin&hairsp;θ&hairsp;cos&hairsp;φ, sin&hairsp;θ&hairsp;sin&hairsp;φ,
+            cos&hairsp;θ) on the unit sphere. |b| = 1 therefore means a pure two-flavor state; anything shorter
+            means probability sits in the third flavor. For the ντ-vs-νμ pole choice, replace a<sub>e</sub> with
+            a<sub>τ</sub>. A faithful three-flavor generalization would use the eight Gell-Mann matrices instead of
+            the three Pauli matrices, but pure states then occupy a curved 4-dimensional subset of an 8-dimensional
+            space, which has no faithful 3D rendering; projecting onto two-flavor subspaces is the price of a
+            picture.
+          </p>
+        </details>
         <p><button class="linkish" @click="openView('sphere')">open this view →</button></p>
       </section>
 
@@ -155,6 +232,29 @@ onMounted(() => {
           δCP rotates the arrows relative to each other (moving where they align), while energy and rock
           density change the arrows’ lengths.
         </p>
+        <details class="math">
+          <summary>Show details</summary>
+          <p>
+            For the appearance channel ν<sub>μ</sub>→ν<sub>β</sub> (β = e or τ, chosen in the view), the amplitude
+            is split into its three matter-eigenstate terms,
+          </p>
+          <p class="eq">
+            A(L) = a<sub>β</sub>(L) = Σ<sub>i</sub> c<sub>i</sub> e<sup>−iλ<sub>i</sub>L</sup>,
+            &nbsp;&nbsp; c<sub>i</sub> = W<sub>βi</sub> W<sub>μi</sub><sup>*</sup>.
+          </p>
+          <p>
+            Each term is a complex number of fixed length |c<sub>i</sub>| rotating at its own angular rate
+            λ<sub>i</sub>. Complex numbers add like 2D vectors, so the three terms are drawn head to tail in the
+            complex plane, with the total A as a separate arrow and P = |A|² on the floor. An overall phase does
+            not change |A|², so the eigenvalues are shifted by λ → λ − λ<sub>min</sub>: the lowest arm stays fixed
+            and only the relative rates λ<sub>2</sub> − λ<sub>1</sub> and λ<sub>3</sub> − λ<sub>1</sub> are seen
+            rotating. At L = 0 the three arms close into a triangle, because
+            Σ<sub>i</sub> W<sub>βi</sub>W<sub>μi</sub><sup>*</sup> = 0 for β ≠ μ (unitarity of W). In matter at
+            long-baseline energies the ν<sub>μ</sub>→ν<sub>τ</sub> triangle has one arm almost collapsed, because
+            the intermediate matter eigenstate becomes nearly pure ν<sub>e</sub>, leaving a two-phasor
+            interference (section 5 of the paper).
+          </p>
+        </details>
         <p><button class="linkish" @click="openView('phasors')">open this view →</button></p>
       </section>
 
@@ -170,6 +270,19 @@ onMounted(() => {
           energies flip flavor faster.
           Switch the display to “stacked bands” and the same information unrolls into a box.
         </p>
+        <details class="math">
+          <summary>Show details</summary>
+          <p>
+            Each cross-section shows P<sub>e</sub>, P<sub>μ</sub>, P<sub>τ</sub> = |a<sub>e</sub>|²,
+            |a<sub>μ</sub>|², |a<sub>τ</sub>|² at that L (initial flavor set by the channel) as angular sectors of
+            area proportional to each probability; unitarity, P<sub>e</sub> + P<sub>μ</sub> + P<sub>τ</sub> = 1, is
+            why the radius never changes. In the stacked-bands display the red surface over the (L, E) plane is
+            P<sub>e</sub>, the blue surface is P<sub>e</sub> + P<sub>μ</sub>, and the gap up to the box ceiling
+            (P = 1) is P<sub>τ</sub>. The red surface is the Oscillogram surface for ν<sub>μ</sub>→ν<sub>e</sub>,
+            so this volume is the unitarity-complete oscillogram: it shows where the disappeared flux goes. The two
+            2D panels are the cuts at the shared E (fractions vs L) and at the marker's L (fractions vs E).
+          </p>
+        </details>
         <p><button class="linkish" @click="openView('tube')">open this view →</button></p>
       </section>
 
@@ -196,6 +309,29 @@ onMounted(() => {
           view reproduces the vacuum curve). The line riding the surface is the cut through the
           experiment's energy window at the fixed baseline L, and it is the same spectrum drawn in the second 2D panel.
         </p>
+        <details class="math">
+          <summary>Show details</summary>
+          <p>In vacuum (W → U), |a<sub>β</sub>|² expands into the standard oscillation formula</p>
+          <p class="eq">
+            P(ν<sub>α</sub>→ν<sub>β</sub>) = δ<sub>αβ</sub>
+            − 4 Σ<sub>i&gt;j</sub> Re(U<sub>αi</sub><sup>*</sup>U<sub>βi</sub>U<sub>αj</sub>U<sub>βj</sub><sup>*</sup>) sin²Δ<sub>ij</sub>
+            + 2 Σ<sub>i&gt;j</sub> Im(U<sub>αi</sub><sup>*</sup>U<sub>βi</sub>U<sub>αj</sub>U<sub>βj</sub><sup>*</sup>) sin&hairsp;2Δ<sub>ij</sub>,
+          </p>
+          <p>
+            which depends on L and E only through L/E inside the phases
+            Δ<sub>ij</sub> = 1.267 · Δm²<sub>ij</sub>[eV²] · L[km] / E[GeV]. The front-plane curves are this
+            formula for all four channels against log<sub>10</sub>(L/E) from 30 to 10<sup>5</sup> km/GeV; the
+            first atmospheric extremum sits at Δ<sub>31</sub> = π/2 (L/E ≈ 500 km/GeV) and the solar valley at
+            Δ<sub>21</sub> = π/2 (≈ 1.6×10<sup>4</sup> km/GeV). Dashed markers pin each preset at its flux-peak
+            L/E. The optional averaging cross-fades sin²Δ<sub>31</sub> into its mean ½ as the atmospheric phase
+            grows past ~15–25 rad, mimicking finite energy resolution. The surface is the full matter calculation
+            for the selected channel across the experiment's energy window (each row clipped to L ≤ 2× baseline)
+            at the shared ρ: the matter term a grows with E at fixed L/E, so each energy peels away from the vacuum
+            curve by a different amount. The line on the surface is the cut at the experiment's baseline L,
+            identical to the second 2D panel's spectrum (vacuum curve dashed); at ρ = 0 the surface is flat along
+            E and its front view lies on the vacuum curve.
+          </p>
+        </details>
         <p><button class="linkish" @click="openView('loe')">open this view →</button></p>
       </section>
 
@@ -217,9 +353,12 @@ onMounted(() => {
       </section>
 
       <section id="faq-cite">
-        <h3>How to cite</h3>
+        <h3>Paper and how to cite</h3>
         <p>
-          If you use NuGlass in a paper or talk, please cite it as:
+          NuGlass is described in C. Zhang, <em>NuGlass: A Fast and Interactive 3D Visualization of Neutrino
+          Oscillations</em>,
+          <a href="https://arxiv.org/abs/2608.25049" target="_blank" rel="noopener">arXiv:2608.25049</a>
+          (2026). If you use NuGlass in a paper or talk, please cite it as:
         </p>
         <pre class="bib">{{ BIBTEX }}</pre>
         <p><button class="linkish" @click="copyBibtex">{{ copied ? 'copied ✓' : 'copy BibTeX' }}</button></p>
@@ -265,6 +404,29 @@ p { margin: 10px 0; }
   white-space: nowrap;
 }
 .linkish { font-size: 14px; }
+details.math {
+  margin: 10px 0;
+  padding: 6px 14px;
+  font-size: 15px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+details.math summary {
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--accent);
+  padding: 4px 0;
+}
+details.math p { margin: 8px 0; }
+.eq {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  text-align: center;
+  overflow-x: auto;
+  padding: 2px 0;
+}
 .bib {
   font-family: var(--font-mono);
   font-size: 13px;

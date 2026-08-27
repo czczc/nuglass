@@ -4,6 +4,8 @@ A fast and interactive 3D visualization of neutrino oscillations, built with Vue
 
 **Live site: https://czczc.github.io/nuglass/** — installable as a progressive web app; after the first visit it also works offline.
 
+**Paper: [arXiv:2608.25049](https://arxiv.org/abs/2608.25049)** — describes the physics engines, the six views, and the application design.
+
 The app offers six linked views of the same physics (oscillogram, biprobability, statesphere, phasors, flavortube, and worldline), each paired with live 2D plots, switchable between oscillation channels (νμ→νe, νμ→νμ, νμ→ντ, νe→νe), with experiment presets spanning accelerator and reactor scales (DUNE, NOvA, T2K, JUNO, KamLAND, Daya Bay). All calculations are performed live in the browser by two independent engines: a JavaScript port of NuFast-LBL ([Denton & Parke, arXiv:2405.02400](https://arxiv.org/abs/2405.02400)) and an exact amplitude engine that tracks the full quantum state, cross-checked against each other to better than one part in ten million. See the in-app FAQ page for the physics details.
 
 ## Local setup
@@ -25,12 +27,14 @@ Pushes to `main` that touch `app/` are automatically tested, built, and deployed
 If you use NuGlass in a paper or talk, please cite it as:
 
 ```bibtex
-@misc{nuglass,
-  author       = {Zhang, Chao},
-  title        = {NuGlass: a fast and interactive 3D visualization of neutrino oscillations},
-  year         = {2026},
-  howpublished = {\url{https://czczc.github.io/nuglass/}},
-  note         = {Source code: \url{https://github.com/czczc/nuglass}}
+@article{nuglass,
+  author        = {Zhang, Chao},
+  title         = {NuGlass: A Fast and Interactive 3D Visualization of Neutrino Oscillations},
+  year          = {2026},
+  eprint        = {2608.25049},
+  archivePrefix = {arXiv},
+  primaryClass  = {hep-ph},
+  note          = {Web app: \url{https://czczc.github.io/nuglass/}; source code: \url{https://github.com/czczc/nuglass}}
 }
 ```
 

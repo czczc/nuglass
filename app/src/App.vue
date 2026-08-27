@@ -27,6 +27,7 @@ const isCustom = computed(() => store.preset === 'custom');
 const chipTitle = (p) => (isCustom.value && store.basePreset === p
   ? `parameters modified — click to reset to ${p} defaults` : p);
 const logoSrc = computed(() => (store.theme === 'light' ? logoLight : logoDark));
+const BASE_URL = import.meta.env.BASE_URL;
 
 // channel rail: chips the active experiment doesn't measure are dimmed, and
 // their tooltip warns about the experiment switch the click would trigger
@@ -54,10 +55,10 @@ function pickChannel(c) {
 <template>
   <div class="app">
     <header>
-      <div class="brand">
+      <a class="brand" :href="BASE_URL" title="NuGlass home">
         <img class="logo" :src="logoSrc" alt="" />
         <span class="wordmark">NuGlass</span>
-      </div>
+      </a>
       <nav class="tabs" aria-label="View">
         <button v-for="v in VIEWS" :key="v.id" :class="{ on: store.view === v.id && !store.faq && !store.exps }"
           @click="router.push('/' + v.id)">
@@ -199,7 +200,7 @@ header {
   height: 2px;
   background: var(--accent);
 }
-.brand { display: flex; align-items: center; gap: 8px; flex: none; }
+.brand { display: flex; align-items: center; gap: 8px; flex: none; color: inherit; text-decoration: none; }
 .logo { height: 38px; display: block; }
 .wordmark {
   font-family: var(--font-mono);
